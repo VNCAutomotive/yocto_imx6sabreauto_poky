@@ -1,3 +1,5 @@
+# Copyright (C) 2014-2015 RealVNC Ltd.  All Rights Reserved.
+
 LICENSE = "CLOSED"
 
 REALVNC_BUILD_NUMBER="7943"

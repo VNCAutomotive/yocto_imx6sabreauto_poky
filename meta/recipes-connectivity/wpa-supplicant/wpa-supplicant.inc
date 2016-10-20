@@ -1,16 +1,16 @@
 SUMMARY = "Client for Wi-Fi Protected Access (WPA)"
-HOMEPAGE = "http://w1.fi/wpa_supplicant/"
-BUGTRACKER = "http://w1.fi/security/"
+HOMEPAGE = "http://hostap.epitest.fi/wpa_supplicant/"
+BUGTRACKER = "http://hostap.epitest.fi/bugz/"
 SECTION = "network"
 LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://COPYING;md5=36b27801447e0662ee0138d17fe93880 \
-                    file://README;beginline=1;endline=56;md5=7f393579f8b109fe91f3b9765d26c7d3 \
-                    file://wpa_supplicant/wpa_supplicant.c;beginline=1;endline=12;md5=3430fda79f2ba1dd545f0b3c4d6e4d24"
-DEPENDS = "dbus libnl"
+LIC_FILES_CHKSUM = "file://COPYING;md5=ab87f20cd7e8c0d0a6539b34d3791d0e \
+                    file://README;beginline=1;endline=56;md5=a07250b28e857455336bb59fc31cb845 \
+                    file://wpa_supplicant/wpa_supplicant.c;beginline=1;endline=12;md5=e8e021e30f3a6ab7c341b66b86626a5a"
+DEPENDS = "dbus libnl libgcrypt"
 RRECOMMENDS_${PN} = "wpa-supplicant-passphrase wpa-supplicant-cli"
 
 PACKAGECONFIG ??= "gnutls"
-PACKAGECONFIG[gnutls] = ",,gnutls libgcrypt"
+PACKAGECONFIG[gnutls] = ",,gnutls"
 PACKAGECONFIG[openssl] = ",,openssl"
 
 inherit systemd
@@ -18,15 +18,17 @@ inherit systemd
 SYSTEMD_SERVICE_${PN} = "wpa_supplicant.service wpa_supplicant-nl80211@.service wpa_supplicant-wired@.service"
 SYSTEMD_AUTO_ENABLE = "disable"
 
-SRC_URI = "http://w1.fi/releases/wpa_supplicant-${PV}.tar.gz  \
+SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
            file://defconfig \
            file://wpa-supplicant.sh \
            file://wpa_supplicant.conf \
            file://wpa_supplicant.conf-sane \
            file://99_wpa_supplicant \
+           file://fix-libnl3-host-contamination.patch \
+           file://f2b3acc9d7b91fbaccfc9dd8d408252bda4f1be9.patch \
           "
-SRC_URI[md5sum] = "96ff75c3a514f1f324560a2376f13110"
-SRC_URI[sha256sum] = "cce55bae483b364eae55c35ba567c279be442ed8bab5b80a3c7fb0d057b9b316"
+SRC_URI[md5sum] = "f2ed8fef72cf63d8d446a2d0a6da630a"
+SRC_URI[sha256sum] = "eaaa5bf3055270e521b2dff64f2d203ec8040f71958b8588269a82c00c9d7b6a"
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
 
@@ -37,10 +39,8 @@ FILES_${PN} += "${datadir}/dbus-1/system-services/*"
 CONFFILES_${PN} += "${sysconfdir}/wpa_supplicant.conf"
 
 do_configure () {
-	${MAKE} -C wpa_supplicant clean
 	install -m 0755 ${WORKDIR}/defconfig wpa_supplicant/.config
 	echo "CFLAGS +=\"-I${STAGING_INCDIR}/libnl3\"" >> wpa_supplicant/.config
-	echo "DRV_CFLAGS +=\"-I${STAGING_INCDIR}/libnl3\"" >> wpa_supplicant/.config
 	
 	if echo "${PACKAGECONFIG}" | grep -qw "openssl"; then
         	ssl=openssl

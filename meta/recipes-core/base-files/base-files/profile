@@ -35,5 +35,6 @@ if [ -x /usr/bin/resize ];then
 fi
 
 export PATH PS1 OPIEDIR QPEDIR QTDIR EDITOR TERM
+export DISPLAY=:0
 
 umask 022

@@ -26,6 +26,7 @@ SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
            file://99_wpa_supplicant \
            file://fix-libnl3-host-contamination.patch \
            file://f2b3acc9d7b91fbaccfc9dd8d408252bda4f1be9.patch \
+           file://0001-Change-getting-random-entropy-from-dev-urandom.patch \
           "
 SRC_URI[md5sum] = "f2ed8fef72cf63d8d446a2d0a6da630a"
 SRC_URI[sha256sum] = "eaaa5bf3055270e521b2dff64f2d203ec8040f71958b8588269a82c00c9d7b6a"

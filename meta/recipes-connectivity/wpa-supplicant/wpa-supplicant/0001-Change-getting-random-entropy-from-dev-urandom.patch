@@ -1,0 +1,100 @@
+From 587d5d4bdd44e106eeb73e631daa6b38cde7f3ac Mon Sep 17 00:00:00 2001
+From: Yun Jiang <Yun.Jiang@realvnc.com>
+Date: Fri, 28 Oct 2016 11:22:02 +0100
+Subject: [PATCH] Change getting random entropy from /dev/urandom
+
+---
+ src/crypto/random.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
+
+diff --git a/src/crypto/random.c b/src/crypto/random.c
+index 053740e..d8ab2f4 100644
+--- a/src/crypto/random.c
++++ b/src/crypto/random.c
+@@ -225,17 +225,14 @@ int random_pool_ready(void)
+ 		return 1; /* Already initialized - good to continue */
+ 
+ 	/*
+-	 * Try to fetch some more data from the kernel high quality
+-	 * /dev/random. There may not be enough data available at this point,
+-	 * so use non-blocking read to avoid blocking the application
+-	 * completely.
++	 * Try to fetch some more data from the kernel /dev/urandom.
+ 	 */
+-	fd = open("/dev/random", O_RDONLY | O_NONBLOCK);
++	fd = open("/dev/urandom", O_RDONLY | O_NONBLOCK);
+ 	if (fd < 0) {
+ #ifndef CONFIG_NO_STDOUT_DEBUG
+ 		int error = errno;
+-		perror("open(/dev/random)");
+-		wpa_printf(MSG_ERROR, "random: Cannot open /dev/random: %s",
++		perror("open(/dev/urandom)");
++		wpa_printf(MSG_ERROR, "random: Cannot open /dev/urandom: %s",
+ 			   strerror(error));
+ #endif /* CONFIG_NO_STDOUT_DEBUG */
+ 		return -1;
+@@ -244,12 +241,12 @@ int random_pool_ready(void)
+ 	res = read(fd, dummy_key + dummy_key_avail,
+ 		   sizeof(dummy_key) - dummy_key_avail);
+ 	if (res < 0) {
+-		wpa_printf(MSG_ERROR, "random: Cannot read from /dev/random: "
++		wpa_printf(MSG_ERROR, "random: Cannot read from /dev/urandom: "
+ 			   "%s", strerror(errno));
+ 		res = 0;
+ 	}
+ 	wpa_printf(MSG_DEBUG, "random: Got %u/%u bytes from "
+-		   "/dev/random", (unsigned) res,
++		   "/dev/urandom", (unsigned) res,
+ 		   (unsigned) (sizeof(dummy_key) - dummy_key_avail));
+ 	dummy_key_avail += res;
+ 	close(fd);
+@@ -262,7 +259,7 @@ int random_pool_ready(void)
+ 	}
+ 
+ 	wpa_printf(MSG_INFO, "random: Only %u/%u bytes of strong "
+-		   "random data available from /dev/random",
++		   "random data available from /dev/urandom",
+ 		   (unsigned) dummy_key_avail, (unsigned) sizeof(dummy_key));
+ 
+ 	if (own_pool_ready >= MIN_READY_MARK ||
+@@ -315,12 +312,12 @@ static void random_read_fd(int sock, void *eloop_ctx, void *sock_ctx)
+ 	res = read(sock, dummy_key + dummy_key_avail,
+ 		   sizeof(dummy_key) - dummy_key_avail);
+ 	if (res < 0) {
+-		wpa_printf(MSG_ERROR, "random: Cannot read from /dev/random: "
++		wpa_printf(MSG_ERROR, "random: Cannot read from /dev/urandom: "
+ 			   "%s", strerror(errno));
+ 		return;
+ 	}
+ 
+-	wpa_printf(MSG_DEBUG, "random: Got %u/%u bytes from /dev/random",
++	wpa_printf(MSG_DEBUG, "random: Got %u/%u bytes from /dev/urandom",
+ 		   (unsigned) res,
+ 		   (unsigned) (sizeof(dummy_key) - dummy_key_avail));
+ 	dummy_key_avail += res;
+@@ -415,18 +412,18 @@ void random_init(const char *entropy_file)
+ 	if (random_fd >= 0)
+ 		return;
+ 
+-	random_fd = open("/dev/random", O_RDONLY | O_NONBLOCK);
++	random_fd = open("/dev/urandom", O_RDONLY | O_NONBLOCK);
+ 	if (random_fd < 0) {
+ #ifndef CONFIG_NO_STDOUT_DEBUG
+ 		int error = errno;
+-		perror("open(/dev/random)");
+-		wpa_printf(MSG_ERROR, "random: Cannot open /dev/random: %s",
++		perror("open(/dev/urandom)");
++		wpa_printf(MSG_ERROR, "random: Cannot open /dev/urandom: %s",
+ 			   strerror(error));
+ #endif /* CONFIG_NO_STDOUT_DEBUG */
+ 		return;
+ 	}
+ 	wpa_printf(MSG_DEBUG, "random: Trying to read entropy from "
+-		   "/dev/random");
++		   "/dev/urandom");
+ 
+ 	eloop_register_read_sock(random_fd, random_read_fd, NULL, NULL);
+ #endif /* __linux__ */
+-- 
+1.9.1
+

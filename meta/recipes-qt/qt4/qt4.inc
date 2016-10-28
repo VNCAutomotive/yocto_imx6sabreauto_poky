@@ -217,34 +217,34 @@ do_configure() {
 	cp -f ${WORKDIR}/linux.conf mkspecs/common/
 
 	echo "[Paths]"                                 > $QT_CONF_PATH
-	echo "Prefix=${prefix}"                       >> $QT_CONF_PATH
-	echo "Documentation=${docdir}/${QT_DIR_NAME}" >> $QT_CONF_PATH
-	echo "Headers=${includedir}/${QT_DIR_NAME}"   >> $QT_CONF_PATH
-	echo "Libraries=${libdir}"                    >> $QT_CONF_PATH
-	echo "Binaries=${bindir}"                     >> $QT_CONF_PATH
-	echo "Plugins=${libdir}/${QT_DIR_NAME}/plugins" >> $QT_CONF_PATH
-	echo "Imports=${libdir}/${QT_DIR_NAME}/imports" >> $QT_CONF_PATH
-	echo "Data=${datadir}/${QT_DIR_NAME}"         >> $QT_CONF_PATH
-	echo "Translations=${datadir}/${QT_DIR_NAME}/translations" >> $QT_CONF_PATH
-	echo "Settings=${sysconfdir}/${QT_DIR_NAME}"  >> $QT_CONF_PATH
-	echo "Examples=${bindir}/${QT_DIR_NAME}/examples" >> $QT_CONF_PATH
-	echo "Demos=${bindir}/${QT_DIR_NAME}/demos"   >> $QT_CONF_PATH
+	echo "Prefix=${STAGING_DIR_TARGET}${prefix}"  >> $QT_CONF_PATH
+	echo "Documentation=${STAGING_DIR_TARGET}${docdir}/${QT_DIR_NAME}" >> $QT_CONF_PATH
+	echo "Headers=${STAGING_DIR_TARGET}${includedir}/${QT_DIR_NAME}"   >> $QT_CONF_PATH
+	echo "Libraries=${STAGING_DIR_TARGET}${libdir}"                    >> $QT_CONF_PATH
+	echo "Binaries=${STAGING_DIR_TARGET}${bindir}"                     >> $QT_CONF_PATH
+	echo "Plugins=${STAGING_DIR_TARGET}${libdir}/${QT_DIR_NAME}/plugins" >> $QT_CONF_PATH
+	echo "Imports=${STAGING_DIR_TARGET}${libdir}/${QT_DIR_NAME}/imports" >> $QT_CONF_PATH
+	echo "Data=${STAGING_DIR_TARGET}${datadir}/${QT_DIR_NAME}"         >> $QT_CONF_PATH
+	echo "Translations=${STAGING_DIR_TARGET}${datadir}/${QT_DIR_NAME}/translations" >> $QT_CONF_PATH
+	echo "Settings=${STAGING_DIR_TARGET}${sysconfdir}/${QT_DIR_NAME}"  >> $QT_CONF_PATH
+	echo "Examples=${STAGING_DIR_TARGET}${bindir}/${QT_DIR_NAME}/examples" >> $QT_CONF_PATH
+	echo "Demos=${STAGING_DIR_TARGET}${bindir}/${QT_DIR_NAME}/demos"   >> $QT_CONF_PATH
 
 	${EXTRA_QMAKE_MUNGE}|| true
 
 	echo yes | QT_LICENSE_FILE="${QT_LICENSE_FILE}" ./configure -v \
-			-prefix ${prefix} \
-			-bindir ${bindir} \
-			-libdir ${libdir} \
-			-datadir ${datadir}/${QT_DIR_NAME} \
-			-sysconfdir ${sysconfdir}/${QT_DIR_NAME} \
-			-docdir ${docdir}/${QT_DIR_NAME} \
-			-headerdir ${includedir}/${QT_DIR_NAME} \
-			-plugindir ${libdir}/${QT_DIR_NAME}/plugins \
-			-importdir ${libdir}/${QT_DIR_NAME}/imports \
-			-translationdir ${datadir}/${QT_DIR_NAME}/translations \
-			-examplesdir ${bindir}/${QT_DIR_NAME}/examples \
-			-demosdir ${bindir}/${QT_DIR_NAME}/demos \
+			-prefix ${STAGING_DIR_TARGET}${prefix} \
+			-bindir ${STAGING_DIR_TARGET}${bindir} \
+			-libdir ${STAGING_DIR_TARGET}${libdir} \
+			-datadir ${STAGING_DIR_TARGET}${datadir}/${QT_DIR_NAME} \
+			-sysconfdir ${STAGING_DIR_TARGET}${sysconfdir}/${QT_DIR_NAME} \
+			-docdir ${STAGING_DIR_TARGET}${docdir}/${QT_DIR_NAME} \
+			-headerdir ${STAGING_DIR_TARGET}${includedir}/${QT_DIR_NAME} \
+			-plugindir ${STAGING_DIR_TARGET}${libdir}/${QT_DIR_NAME}/plugins \
+			-importdir ${STAGING_DIR_TARGET}${libdir}/${QT_DIR_NAME}/imports \
+			-translationdir ${STAGING_DIR_TARGET}${datadir}/${QT_DIR_NAME}/translations \
+			-examplesdir ${STAGING_DIR_TARGET}${bindir}/${QT_DIR_NAME}/examples \
+			-demosdir ${STAGING_DIR_TARGET}${bindir}/${QT_DIR_NAME}/demos \
 			-platform ${TARGET_OS}-oe-g++ \
 			-xplatform ${TARGET_OS}-oe-g++ \
 			${QT_ENDIAN} \
@@ -334,7 +334,11 @@ do_install() {
 	oe_runmake install INSTALL_ROOT=${D}
 
 	# Install a proper target version of qmake
-	rm ${D}/${bindir}/qmake
+    mkdir -p /tmp/qt-x11-free
+    rm -rf /tmp/qt-x11-free/*
+    mv ${D}/* /tmp/qt-x11-free/
+    mv /tmp/qt-x11-free/${STAGING_DIR_TARGET}/* ${D}/
+    rm ${D}/${bindir}/qmake
 	install -m 0755 bin/qmake2 ${D}${bindir}/qmake
 
 	# fix pkgconfig, libtool and prl files

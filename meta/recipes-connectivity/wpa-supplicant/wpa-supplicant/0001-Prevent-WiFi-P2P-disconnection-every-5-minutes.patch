@@ -1,0 +1,40 @@
+From 4ccdb1fcbe09e33a2c692554c4f37155e14e0f20 Mon Sep 17 00:00:00 2001
+From: Yun Jiang <Yun.Jiang@realvnc.com>
+Date: Fri, 28 Oct 2016 14:38:35 +0100
+Subject: [PATCH 1/2] Prevent WiFi P2P disconnection every 5 minutes.
+
+---
+ src/ap/sta_info.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
+
+diff --git a/src/ap/sta_info.c b/src/ap/sta_info.c
+index 7e75e1a..98d8a18 100644
+--- a/src/ap/sta_info.c
++++ b/src/ap/sta_info.c
+@@ -359,7 +359,7 @@ void ap_handle_timer(void *eloop_ctx, void *timeout_ctx)
+ 		 */
+ 		int fuzz = os_random() % 20;
+ 		inactive_sec = hostapd_drv_get_inact_sec(hapd, sta->addr);
+-		if (inactive_sec == -1) {
++		if (inactive_sec == -1 || inactive_sec == -ENOENT) {
+ 			wpa_msg(hapd->msg_ctx, MSG_DEBUG,
+ 				"Check inactivity: Could not "
+ 				"get station info from kernel driver for "
+@@ -370,14 +370,6 @@ void ap_handle_timer(void *eloop_ctx, void *timeout_ctx)
+ 			 * but do not disconnect the station now.
+ 			 */
+ 			next_time = hapd->conf->ap_max_inactivity + fuzz;
+-		} else if (inactive_sec == -ENOENT) {
+-			wpa_msg(hapd->msg_ctx, MSG_DEBUG,
+-				"Station " MACSTR " has lost its driver entry",
+-				MAC2STR(sta->addr));
+-
+-			/* Avoid sending client probe on removed client */
+-			sta->timeout_next = STA_DISASSOC;
+-			goto skip_poll;
+ 		} else if (inactive_sec < hapd->conf->ap_max_inactivity) {
+ 			/* station activity detected; reset timeout state */
+ 			wpa_msg(hapd->msg_ctx, MSG_DEBUG,
+-- 
+1.9.1
+

@@ -32,6 +32,6 @@ fi
 
 export PATH PS1 OPIEDIR QPEDIR QTDIR EDITOR TERM
 export DISPLAY=:0
-
+ulimit -c unlimited
 umask 022
 

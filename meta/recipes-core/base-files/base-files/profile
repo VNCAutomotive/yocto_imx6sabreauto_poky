@@ -27,7 +27,7 @@ if [ -d /etc/profile.d ]; then
 fi
 
 if [ -x /usr/bin/resize ];then
-  /usr/bin/resize >/dev/null
+  test "`tty | cut -c1-8`" = "/dev/tty" && resize >/dev/null
 fi
 
 export PATH PS1 OPIEDIR QPEDIR QTDIR EDITOR TERM

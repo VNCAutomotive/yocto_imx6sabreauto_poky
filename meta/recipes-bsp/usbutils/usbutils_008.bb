@@ -21,11 +21,12 @@ inherit autotools gettext pkgconfig distro_features_check
 
 do_install_append() {
     wget http://www.linux-usb.org/usb.ids -O ${WORKDIR}/usb.ids
-    install -m 0644 ${WORKDIR}/usb.ids ${D}${datadir}/usb.ids
+    mkdir -p ${D}${datadir}/misc
+    install -m 0644 ${WORKDIR}/usb.ids ${D}${datadir}/misc/usb.ids
 }
 
 FILES_${PN}-dev += "${datadir}/pkgconfig"
-FILES_${PN}-dev += "${datadir}/usb.ids"
+FILES_${PN} += "${datadir}/misc/usb.ids"
 
 RDEPENDS_${PN} = "libudev"
 RDEPENDS_${PN}-ptest = "libboost-system libboost-thread"

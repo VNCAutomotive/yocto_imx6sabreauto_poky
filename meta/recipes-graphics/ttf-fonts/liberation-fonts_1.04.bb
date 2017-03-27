@@ -25,8 +25,10 @@ SRC_URI[sha256sum] = "0e0d0957c85b758561a3d4aef4ebcd2c39959e5328429d96ae106249d8
 
 do_install () {
 	install -d ${D}${datadir}/fonts/ttf/
+	install -d ${D}${libdir}/fonts/
 	for i in *.ttf; do
 		install -m 0644 $i ${D}${prefix}/share/fonts/ttf/${i}
+        ln -s ${prefix}/share/fonts/ttf/${i} ${D}${prefix}/lib/fonts/${i}
 	done
 
 	install -d ${D}${sysconfdir}/fonts/conf.d/
@@ -37,4 +39,4 @@ do_install () {
 }
 
 PACKAGES = "${PN}"
-FILES_${PN} += "${sysconfdir} ${datadir}"
+FILES_${PN} += "${sysconfdir} ${datadir} ${libdir}/fonts"

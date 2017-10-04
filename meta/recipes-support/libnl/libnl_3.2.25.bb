@@ -12,8 +12,9 @@ DEPENDS = "flex-native bison-native"
 
 SRC_URI = "http://www.infradead.org/~tgr/${BPN}/files/${BP}.tar.gz \
            file://fix-pktloc_syntax_h-race.patch \
-           file://fix-pc-file.patch \
           "
+
+# We do not include file://fix-pc-file.patch as it adds unnecessary linkage
 
 SRC_URI[md5sum] = "03f74d0cd5037cadc8cdfa313bbd195c"
 SRC_URI[sha256sum] = "8beb7590674957b931de6b7f81c530b85dc7c1ad8fbda015398bc1e8d1ce8ec5"

@@ -108,7 +108,7 @@ ChallengeResponseAuthentication no
 #TCPKeepAlive yes
 #UseLogin no
 UsePrivilegeSeparation sandbox # Default for new installations.
-#PermitUserEnvironment no
+PermitUserEnvironment yes
 Compression no
 ClientAliveInterval 15
 ClientAliveCountMax 4

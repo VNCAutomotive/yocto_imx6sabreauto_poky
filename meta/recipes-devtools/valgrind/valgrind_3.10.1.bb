@@ -47,6 +47,9 @@ do_install_append () {
     install -m 644 ${B}/default.supp ${D}/${libdir}/valgrind/
 }
 
+# keep debug information
+INHIBIT_PACKAGE_STRIP = "1"
+
 RDEPENDS_${PN} += "perl"
 
 FILES_${PN}-dbg += "${libdir}/${PN}/*/.debug/*"

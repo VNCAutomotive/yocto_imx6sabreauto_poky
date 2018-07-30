@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2017 RealVNC Ltd.  All Rights Reserved.
+# Copyright (C) 2018 VNC Automotive Ltd.  All Rights Reserved.
 
 LICENSE = "CLOSED"
 

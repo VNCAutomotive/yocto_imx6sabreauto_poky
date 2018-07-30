@@ -1,5 +1,5 @@
 From caf8e3482052ca6cdcdc954b71e0b2bd9b4f988c Mon Sep 17 00:00:00 2001
-From: Yun Jiang <Yun.Jiang@realvnc.com>
+From: Yun Jiang <Yun.Jiang@vncautomotive.com>
 Date: Fri, 28 Oct 2016 14:39:12 +0100
 Subject: [PATCH 2/2] Change getting random from /dev/random to /dev/urandom
 

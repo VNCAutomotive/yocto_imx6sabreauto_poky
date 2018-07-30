@@ -1,4 +1,4 @@
-# Copyright (C) 2015-2017 RealVNC Ltd.  All Rights Reserved.
+# Copyright (C) 2018 VNC Automotive Ltd.  All Rights Reserved.
 
 # The license(s) for the AR6003 firmware binaries.
 LICENSE = "CLOSED"
@@ -9,7 +9,7 @@ DEPENDS = "linux-firmware"
 
 # The AR6003 firmware binaries, by hardware revision. You must obtain these
 # firmware binaries yourself, and place them in a subdirectory named
-# realvnc-ar6003-firmware, at the same level as this recipe. You may need to
+# vncautomotive-ar6003-firmware, at the same level as this recipe. You may need to
 # amend the hardware revision for your platform. Any changes here must also be
 # reflected in do_install().
 SRC_URI = "file://hw2.1.1"
@@ -26,7 +26,7 @@ do_install() {
   install -m 0644 ${S}/hw2.1.1/* ${D}/lib/firmware/ath6k/AR6003/hw2.1.1/
 }
 
-pkg_postinst_realvnc-ar6003-firmware() {
+pkg_postinst_vncautomotive-ar6003-firmware() {
   # Remove ath6k hw2.1.1 firmware binaries that are known to conflict.
   # If we're running on-device, then $D is empty-string.
   rm -f $D/lib/firmware/ath6k/AR6003/hw2.1.1/athwlan.bin

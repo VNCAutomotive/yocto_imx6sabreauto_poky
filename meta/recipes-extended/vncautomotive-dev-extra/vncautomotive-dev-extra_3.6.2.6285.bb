@@ -1,12 +1,12 @@
-# Copyright (C) 2017 RealVNC Ltd.  All Rights Reserved.
+# Copyright (C) 2018 VNC Automotive Ltd.  All Rights Reserved.
 
 LICENSE = "CLOSED"
 
-REALVNC_ARCHIVE_NAME="RealVNC-ViewerSDK-${PV}-Linux-automotive"
+VNCAUTOMOTIVE_ARCHIVE_NAME="VNCAutomotive-DevSDK-${PV}-Linux-automotive"
 
-SRC_URI = "file://${REALVNC_ARCHIVE_NAME}.tgz"
+SRC_URI = "file://${VNCAUTOMOTIVE_ARCHIVE_NAME}.tgz"
 
-S_ARCHIVE = "${WORKDIR}/${REALVNC_ARCHIVE_NAME}"
+S_ARCHIVE = "${WORKDIR}/${VNCAUTOMOTIVE_ARCHIVE_NAME}"
 
 FILES_${PN} = "/"
 
@@ -20,6 +20,8 @@ do_install() {
     install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-mirrorlink.rules ${D}/etc/udev/rules.d/
     install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-usbdiscoverer.rules ${D}/etc/udev/rules.d/
     install -m 0644 ${S_ARCHIVE}/wifip2padaptations/vncwifip2padaptation-wpa_supplicant/scripts/udev/etc/udev/rules.d/99-wfd.rules ${D}/etc/udev/rules.d/
+    install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-aoadiscoverer.rules ${D}/etc/udev/rules.d/
+    install -m 0644  ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-iap2discoverer.rules ${D}/etc/udev/rules.d/
 
 	mkdir -p ${D}/etc/modprobe.d
 	cat >> ${D}/etc/modprobe.d/ath6kl_core.conf << EOF

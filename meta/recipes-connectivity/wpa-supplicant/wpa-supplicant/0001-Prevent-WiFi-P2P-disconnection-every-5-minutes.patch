@@ -1,5 +1,5 @@
 From 4ccdb1fcbe09e33a2c692554c4f37155e14e0f20 Mon Sep 17 00:00:00 2001
-From: Yun Jiang <Yun.Jiang@realvnc.com>
+From: Yun Jiang <Yun.Jiang@vncautomotive.com>
 Date: Fri, 28 Oct 2016 14:38:35 +0100
 Subject: [PATCH 1/2] Prevent WiFi P2P disconnection every 5 minutes.
 

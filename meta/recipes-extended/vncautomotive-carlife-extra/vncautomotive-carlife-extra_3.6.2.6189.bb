@@ -1,16 +1,16 @@
-# Copyright (C) 2017 RealVNC Ltd.  All Rights Reserved.
+# Copyright (C) 2018 VNC Automotive Ltd.  All Rights Reserved.
 
 LICENSE = "CLOSED"
 
-# A python snippet to set variable REALVNC_ARCHIVE_NAME.
-# If the file "RealVNC-CarLife-${PV}-Linux-Full.tgz" exists under the directory
-# realvnc-carlife-extra, then we use it. Otherwise, we assume that the file
-# "RealVNC-CarLife-${PV}-Linux-AOA.tgz" exists.
-REALVNC_ARCHIVE_NAME="${@'RealVNC-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-Full' if os.path.exists(bb.data.getVar('FILE_DIRNAME',d,1)+'/realvnc-carlife-extra/RealVNC-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-Full.tgz') else 'RealVNC-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-AOA'}"
+# A python snippet to set variable VNCAUTOMOTIVE_ARCHIVE_NAME.
+# If the file "VNCAutomotive-CarLife-${PV}-Linux-Full.tgz" exists under the directory
+# vncautomotive-carlife-extra, then we use it. Otherwise, we assume that the file
+# "VNCAutomotive-CarLife-${PV}-Linux-AOA.tgz" exists.
+VNCAUTOMOTIVE_ARCHIVE_NAME="${@'VNCAutomotive-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-Full' if os.path.exists(bb.data.getVar('FILE_DIRNAME',d,1)+'/vncautomotive-carlife-extra/VNCAutomotive-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-Full.tgz') else 'VNCAutomotive-CarLifeSDK-'+bb.data.getVar('PV',d,1)+'-Linux-AOA'}"
 
-SRC_URI = "file://${REALVNC_ARCHIVE_NAME}.tgz"
+SRC_URI = "file://${VNCAUTOMOTIVE_ARCHIVE_NAME}.tgz"
 
-S_ARCHIVE = "${WORKDIR}/${REALVNC_ARCHIVE_NAME}"
+S_ARCHIVE = "${WORKDIR}/${VNCAUTOMOTIVE_ARCHIVE_NAME}"
 
 FILES_${PN} = "/"
 

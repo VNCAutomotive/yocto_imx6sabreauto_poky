@@ -1,5 +1,5 @@
 From 587d5d4bdd44e106eeb73e631daa6b38cde7f3ac Mon Sep 17 00:00:00 2001
-From: Yun Jiang <Yun.Jiang@realvnc.com>
+From: Yun Jiang <Yun.Jiang@vncautomotive.com>
 Date: Fri, 28 Oct 2016 11:22:02 +0100
 Subject: [PATCH] Change getting random entropy from /dev/urandom
 

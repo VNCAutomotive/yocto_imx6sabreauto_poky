@@ -2,7 +2,9 @@
 
 LICENSE = "CLOSED"
 
-VNCAUTOMOTIVE_ARCHIVE_NAME="VNCAutomotive-ViewerSDK-${PV}-Linux-automotive"
+VNC_DISTRO_NAME := "${@os.popen('ls ${BSPDIR}/sources/poky/meta/recipes-extended/vncautomotive-extra/vncautomotive-extra | grep VNCAutomotive-ViewerSDK-${PV}-Linux-.*.tgz | sed \'s/VNCAutomotive-ViewerSDK-${PV}-Linux-//g\' | sed -e \'s/\..*$//\'').read().strip()}"
+
+VNCAUTOMOTIVE_ARCHIVE_NAME="VNCAutomotive-ViewerSDK-${PV}-Linux-${VNC_DISTRO_NAME}"
 
 SRC_URI = "file://${VNCAUTOMOTIVE_ARCHIVE_NAME}.tgz"
 
@@ -14,8 +16,14 @@ do_install() {
     install -d ${D}/usr/bin
     install -d ${D}/etc/udev/rules.d
     install -m 0755 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/linux_dhcp_setup.sh ${D}/etc/udev/
-    install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-mirrorlink.rules ${D}/etc/udev/rules.d/
-    install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-usbdiscoverer.rules ${D}/etc/udev/rules.d/
+    # Install the MirrorLink rules if present (only present for MirrorLink distrobutions).
+    if [ -f "${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-mirrorlink.rules" ]; then
+        install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-mirrorlink.rules ${D}/etc/udev/rules.d/
+    fi
+    # Install the usb discoverer rules if present (only present for LinkPlus distrobutions).
+    if [ -f "${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-usbdiscoverer.rules" ]; then
+        install -m 0644 ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-usbdiscoverer.rules ${D}/etc/udev/rules.d/
+    fi
     if [ -f "${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-iap2discoverer.rules" ]; then
         install -m 0644  ${S_ARCHIVE}/discoverysdk/UdevScripts/etc/udev/rules.d/99-iap2discoverer.rules ${D}/etc/udev/rules.d/
     fi

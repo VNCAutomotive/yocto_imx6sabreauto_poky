@@ -2,9 +2,7 @@
 
 LICENSE = "CLOSED"
 
-VNC_DISTRO_NAME := "${@os.popen('ls ${BSPDIR}/sources/poky/meta/recipes-extended/vncautomotive-extra/vncautomotive-extra | grep VNCAutomotive-ViewerSDK-${PV}-Linux-.*.tgz | sed \'s/VNCAutomotive-ViewerSDK-${PV}-Linux-//g\' | sed -e \'s/\..*$//\'').read().strip()}"
-
-VNCAUTOMOTIVE_ARCHIVE_NAME="VNCAutomotive-ViewerSDK-${PV}-Linux-${VNC_DISTRO_NAME}"
+VNCAUTOMOTIVE_ARCHIVE_NAME="VNCAutomotive-CobaltLinkPlus-LinuxViewer-${PV}"
 
 SRC_URI = "file://${VNCAUTOMOTIVE_ARCHIVE_NAME}.tgz"
 
